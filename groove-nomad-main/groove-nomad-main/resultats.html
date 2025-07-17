@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Résultats - Groove Nomad</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🎉 Résultats des festivals</h1>
+  </header>
+
+  <main id="resultats-container">
+    <p>Chargement des résultats...</p>
+  </main>
+
+  <script>
+    const token = "patsYgrjMwn48RkHm.b0ee5cb64fc5682050f415907408221db38733924d614d2120f24f1dac8ce14c";
+    const base = "appPsESqzFCuYpyK3";
+    const table = "Festivals";
+
+    const params = new URLSearchParams(window.location.search);
+    const genre = params.get("genre");
+    const country = params.get("country");
+
+    async function fetchFestivals() {
+      const res = await fetch(`https://api.airtable.com/v0/${base}/${table}?pageSize=100`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await res.json();
+      const records = data.records;
+
+      const filtered = records.filter(record => {
+        const f = record.fields;
+
+        const genreOK = !genre || (Array.isArray(f.Genre)
+          ? f.Genre.map(g => g.toLowerCase()).includes(genre.toLowerCase())
+          : (f.Genre || "").toLowerCase().includes(genre.toLowerCase()));
+
+        const countryOK = !country || (f.Country || "").toLowerCase().includes(country.toLowerCase());
+
+        return genreOK && countryOK;
+      });
+
+      const container = document.getElementById("resultats-container");
+      container.innerHTML = "";
+
+      if (filtered.length === 0) {
+        container.innerHTML = "<p>Aucun festival trouvé.</p>";
+        return;
+      }
+
+      filtered.forEach(record => {
+        const f = record.fields;
+        const card = document.createElement("div");
+        card.classList.add("festival-card");
+        card.innerHTML = `
+          <h3>${f["Festival Name"] || "Sans nom"}</h3>
+          <p>📍 ${f.City || ""}, ${f.Country || ""}</p>
+          <p>📅 ${f.Dates || "?"}</p>
+          <p>💶 ${f["Ticket Price (EUR)"] || "?"}€</p>
+          <p><a href="${f.Website || "#"}" target="_blank">Site officiel</a></p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    fetchFestivals().catch(err => {
+      console.error("Erreur lors du chargement des festivals :", err);
+      document.getElementById("resultats-container").innerHTML = "<p>Erreur lors du chargement des résultats.</p>";
+    });
+  </script>
+</body>
+</html>

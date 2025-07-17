@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Réservation – Groove Nomad</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<!-- Chatbot Chatbase -->
+    <!-- Bouton flottant pour ouvrir le chatbot -->
+<button id="chat-toggle" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #1f1f1f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 9999;
+">💬</button>
+
+<!-- Iframe Chatbot (caché au début) -->
+<iframe
+  id="chatbot-iframe"
+  src="https://www.chatbase.co/chatbot-iframe/CNB2bBgnuSIQ5jCGyBlvZ"
+  width="350"
+  height="500"
+  style="
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    border: none;
+    border-radius: 12px;
+    z-index: 9998;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  "
+  allow="clipboard-write"
+></iframe>
+<script>
+  const chatbot = document.getElementById("chatbot-iframe");
+  const toggleBtn = document.getElementById("chat-toggle");
+
+  toggleBtn.addEventListener("click", () => {
+    if (chatbot.style.display === "none" || chatbot.style.display === "") {
+      chatbot.style.display = "block";
+    } else {
+      chatbot.style.display = "none";
+    }
+  });
+</script>
+
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Groove Nomad</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="festivals.html">Festivals</a></li>
+      <li><a href="tourisme.html">Tourisme</a></li>
+      <li><a href="destination.html">Destinations</a></li>
+      <li><a href="reservation.html">Réservation</a></li> <!-- 🔁 ici -->
+    </ul>
+    <div class="user">
+      <img src="img/user-icon.png" alt="Profil" />
+      <a href="#">Connexion</a>
+    </div>
+  </nav>
+</header>
+
+  <section class="manage-reservation">
+  <h2>Gérer ma réservation</h2>
+  <p>Renseignez votre numéro de devis pour retrouver votre réservation.</p>
+  <form id="lookup-form">
+    <input type="text" id="quoteNumber" placeholder="Numéro de devis" required />
+    <button type="submit">Rechercher</button>
+  </form>
+</section>
+
+<section class="reservation-details" id="reservation-details" style="display: none;">
+  <h3>Réservation trouvée</h3>
+  <p>Nom : Jean Dupont</p>
+  <p>Destination : Afronation - Portugal</p>
+  <p>Montant à payer : 299 €</p>
+</section>
+
+<section class="payment-form">
+    <div class="payment-methods">
+        <h3>Méthodes de paiement</h3>
+        <button class="logo-button">
+        <img src="img/visa-logo.png" alt="Visa" height="20" />
+        </button>
+        <button class="logo-button">
+        <img src="img/mastercard-logo.png" alt="MasterCard" height="20" />
+        </button>
+        <button class="logo-button">
+        <img src="img/paypal-logo.png" alt="PayPal" height="20" />
+        </button>
+        <button class="logo-button">
+        <img src="img/klarna-logo.png" alt="Klarna" height="20" />
+        </button><a href="https://buy.stripe.com/test_6oU3cvgwE5xw08C3vB0ZW00" target="_blank" class="pay-stripe">
+        <img src="img/card-icon.png" alt="Paiement" height="24" style="vertical-align: middle; margin-right: 8px;" /> Payer
+</section>
+
+<script>
+  document.getElementById("lookup-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const quote = document.getElementById("quoteNumber").value;
+    if (quote === "GN2025") {
+      document.getElementById("reservation-details").style.display = "block";
+    } else {
+      alert("Aucune réservation trouvée avec ce numéro.");
+    }
+  });
+
+  document.getElementById("payment-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Paiement simulé effectué. Merci !");
+  });
+</script>
+
+  <footer class="main-footer">
+  <div class="footer-content">
+    <div class="footer-links">
+      <a href="#">Contact</a>
+      <a href="#">Mentions légales</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+    <p>&copy; 2025 Groove Nomad — Tous droits réservés.</p>
+  </div>
+</footer>
+</body>
+</html>
